@@ -1,12 +1,59 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="UTF-8">
-    <title>MMXchange Hub</title>
-  </head>
-  <body>
-    <h1>MMXchange Hub</h1>
-    <p>Welcome to MMXchange</p>
-    <p>Buy and sell services with Pi Network</p>
-  </body>
+<head>
+  <meta charset="UTF-8">
+  <title>MMXchange Hub</title>
+
+  <script src="https://sdk.minepi.com/pi-sdk.js"></script>
+</head>
+
+<body>
+
+<h1>MMXchange Hub</h1>
+<p>Welcome to MMXchange</p>
+<p>Buy and sell services with Pi Network</p>
+
+<button onclick="payWithPi()">Pay 0.01 Pi</button>
+
+<script>
+  Pi.init({ version: "2.0" });
+
+  async function payWithPi() {
+
+    try {
+
+      const payment = await Pi.createPayment({
+
+        amount: 0.01,
+        memo: "Test Payment to MMXchange Hub",
+        metadata: { type: "payment" }
+
+      }, {
+
+        onReadyForServerApproval: function(paymentId) {
+          console.log("Ready for approval");
+        },
+
+        onReadyForServerCompletion: function(paymentId, txid) {
+          console.log("Ready for completion");
+        },
+
+        onCancel: function(paymentId) {
+          alert("Payment cancelled");
+        },
+
+        onError: function(error, payment) {
+          console.error(error);
+        }
+
+      });
+
+    } catch (e) {
+      console.error(e);
+    }
+
+  }
+</script>
+
+</body>
 </html>

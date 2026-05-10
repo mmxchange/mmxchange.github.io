@@ -1,57 +1,62 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <meta charset="UTF-8">
-  <title>MMXchange Hub</title>
+<meta charset="UTF-8">
+<title>MMXchange Hub</title>
 
-  <script src="https://sdk.minepi.com/pi-sdk.js"></script>
+<script src="https://sdk.minepi.com/pi-sdk.js"></script>
 
-  <script>
-    Pi.init({ version: "2.0" });
+<script>
+  Pi.init({ version: "2.0" });
 
-    async function payWithPi() {
+  async function loginWithPi() {
+    try {
 
-      const paymentData = {
-        amount: 0.01,
-        memo: "MMXchange Payment",
-        metadata: { type: "service" }
-      };
+      const scopes = ['payments', 'username'];
 
-      const paymentCallbacks = {
-        onReadyForServerApproval: function(paymentId) {
-          console.log(paymentId);
-        },
+      const user = await Pi.authenticate(
+        scopes,
+        onIncompletePaymentFound
+      );
 
-        onReadyForServerCompletion: function(paymentId, txid) {
-          console.log(paymentId, txid);
-        },
+      alert("Logged in as " + user.username);
 
-        onCancel: function(paymentId) {
-          alert("Payment cancelled");
-        },
-
-        onError: function(error, payment) {
-          console.error(error);
-        }
-      };
-
-      Pi.createPayment(paymentData, paymentCallbacks);
+    } catch (err) {
+      console.error(err);
     }
-  </script>
+  }
+
+  function onIncompletePaymentFound(payment) {
+    console.log(payment);
+  }
+</script>
+
+<style>
+body{
+font-family:Arial;
+text-align:center;
+padding:20px;
+background:#f2f2f2;
+}
+
+button{
+padding:10px 20px;
+font-size:16px;
+border-radius:8px;
+}
+</style>
 
 </head>
 
 <body>
 
-  <h1>MMXchange Hub</h1>
+<h1>MMXchange Hub</h1>
 
-  <p>Welcome to MMXchange</p>
+<p>Buy and sell services with Pi Network</p>
 
-  <p>Buy and sell services with Pi Network</p>
-
-  <button onclick="payWithPi()">
-    Pay 0.01 Pi
-  </button>
+<button onclick="loginWithPi()">
+Login with Pi
+</button>
 
 </body>
 </html>

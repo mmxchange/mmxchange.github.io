@@ -1,62 +1,29 @@
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<title>MMXchange Hub</title>
-
 <script src="https://sdk.minepi.com/pi-sdk.js"></script>
-
 <script>
+  // Initialize Pi SDK
   Pi.init({ version: "2.0" });
 
   async function loginWithPi() {
     try {
+      // Request login permissions
+      const scopes = ['username', 'payments']; 
+      const user = await Pi.authenticate(scopes, onIncompletePayment);
 
-      const scopes = ['payments', 'username'];
-
-      const user = await Pi.authenticate(
-        scopes,
-        onIncompletePaymentFound
-      );
-
-      alert("Logged in as " + user.username);
+      // Display user info
+      document.getElementById("loginStatus").innerText = 
+        `Logged in as ${user.username} (Wallet: ${user.wallet_address})`;
 
     } catch (err) {
       console.error(err);
+      document.getElementById("loginStatus").innerText = "Login failed!";
     }
   }
 
-  function onIncompletePaymentFound(payment) {
-    console.log(payment);
+  // Handle incomplete payments (required by Pi SDK)
+  function onIncompletePayment(payment) {
+    console.log("Incomplete payment:", payment);
   }
 </script>
 
-<style>
-body{
-font-family:Arial;
-text-align:center;
-padding:20px;
-background:#f2f2f2;
-}
-
-button{
-padding:10px 20px;
-font-size:16px;
-border-radius:8px;
-}
-</style>
-
-</head>
-
-<body>
-
-<h1>MMXchange Hub</h1>
-
-<p>Buy and sell services with Pi Network</p>
-
-<button onclick="loginWithPi()">
-Login with Pi
-</button>
-
-</body>
-</html>
+<button onclick="loginWithPi()">Login with Pi</button>
+<div id="loginStatus"></div>

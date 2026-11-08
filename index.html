@@ -1,29 +1,14 @@
-<script src="https://sdk.minepi.com/pi-sdk.js"></script>
-<script>
-  // Initialize Pi SDK
-  Pi.init({ version: "2.0" });
+<h1>MMXchange Hub</h1>
 
-  async function loginWithPi() {
-    try {
-      // Request login permissions
-      const scopes = ['username', 'payments']; 
-      const user = await Pi.authenticate(scopes, onIncompletePayment);
-
-      // Display user info
-      document.getElementById("loginStatus").innerText = 
-        `Logged in as ${user.username} (Wallet: ${user.wallet_address})`;
-
-    } catch (err) {
-      console.error(err);
-      document.getElementById("loginStatus").innerText = "Login failed!";
-    }
-  }
-
-  // Handle incomplete payments (required by Pi SDK)
-  function onIncompletePayment(payment) {
-    console.log("Incomplete payment:", payment);
-  }
-</script>
+<p>Welcome to MMXchange Hub, your Pi Ecosystem Utility Platform.</p>
 
 <button onclick="loginWithPi()">Login with Pi</button>
-<div id="loginStatus"></div>
+
+<h2>Marketplace</h2>
+<p>Buy and sell products and services.</p>
+
+<h2>Services</h2>
+<p>Construction, Electrical, Plumbing and more.</p>
+
+<h2>Community</h2>
+<p>Connect with fellow Pioneers.</p>
